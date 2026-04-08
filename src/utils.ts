@@ -16,3 +16,7 @@ export function chunkText(text: string, size = 700, overlap = 100) {
 
     return chunks;
 }
+
+export function chunkTextBySection(text: string) {
+    return text.split("\n\n"); // split by sections
+  }

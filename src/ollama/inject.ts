@@ -1,7 +1,7 @@
 import { Ollama } from "ollama";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { chunkText, loadPDF } from "../utils.js";
+import { chunkText, chunkTextBySection, loadPDF } from "../utils.js";
 import { collection } from "../db.js";
 import "dotenv/config";
 
@@ -15,7 +15,8 @@ const pdfPath = path.resolve(__dirname, "../../sample.pdf");
 
 async function run() {
     const text = await loadPDF(pdfPath);
-    const chunks = chunkText(text);
+    // const chunks = chunkText(text);
+    const chunks = chunkTextBySection(text);
 
     const embeddings = await ollama.embed({
         model: embeddingModel,
@@ -26,6 +27,10 @@ async function run() {
         ids: chunks.map((_, i) => `id-${i}`),
         documents: chunks,
         embeddings: embeddings.embeddings,
+        metadatas: chunks.map((_, i) => ({
+            source: "sample.pdf",
+            chunk: i,
+          })),
     });
 
     console.log("Ingested!");

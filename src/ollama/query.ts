@@ -22,7 +22,7 @@ async function ask(question: string) {
 
     const results = await collection.query({
         queryEmbeddings: [embedding],
-        nResults: 4,
+        nResults: 3,
     });
 
     const context = results.documents?.[0]?.join("\n") || "";
@@ -47,11 +47,13 @@ async function ask(question: string) {
     if (!answer) {
         throw new Error("Ollama did not return a chat response.");
     }
-
+    console.log("Results from db:", results)
+    console.log("Question asked", question)
     console.log("\nAnswer:\n", answer);
     console.log("\nSources:\n", results.documents?.[0]);
 }
 
 // Example
-ask("What are the pillars?");
-ask("How to cook briyani?");
+ask("What are the four pillars of Ikigai?");
+ask("What are the steps mentioned?");
+ask("Who invented Ikigai?")

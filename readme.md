@@ -98,6 +98,8 @@ Sources:
 ]
 ```
 
+If you store metadata for each chunk, you may also print or inspect metadata along with the retrieved source chunks.
+
 ## How To Run
 
 ## 1. Install dependencies
@@ -178,6 +180,75 @@ npm run query:ollama
 - For reliable learning experiments, use the same provider for both inject and query.
 - The current query files use hardcoded questions instead of command-line input.
 
+## Metadata And `k`
+
+Two changes can noticeably affect your RAG results:
+
+- adding metadata to stored chunks
+- changing `k`, the number of nearest chunks returned from the vector database
+
+### Metadata
+
+Metadata is extra information stored with each chunk, for example:
+
+- page number
+- section title
+- file name
+- chunk index
+- topic label
+
+Metadata is useful for:
+
+- understanding where a retrieved chunk came from
+- debugging retrieval quality
+- filtering results to a subset of documents or pages
+
+Important:
+
+- metadata alone does not improve semantic similarity
+- metadata becomes especially useful when you use it for filtering or for better source inspection
+
+### What `k` Means
+
+`k` is the number of nearest chunks returned by the vector search.
+
+Examples:
+
+- `k = 1` means only the single closest chunk is returned
+- `k = 4` means the top 4 closest chunks are returned
+
+### Why Results Change When `k` Changes
+
+If you changed `k` from `1` to `4` and got a different answer, that is expected.
+
+Reason:
+
+- with `k = 1`, the model only sees one chunk of context
+- with `k = 4`, the model sees more retrieved chunks
+- more context can improve the answer if the first chunk was incomplete
+- more context can also introduce noise if extra chunks are less relevant
+
+Typical tradeoff:
+
+- lower `k`: more precise, but may miss important supporting context
+- higher `k`: more complete, but can reduce focus if unrelated chunks are included
+
+### Learning Experiment
+
+To understand retrieval behavior better, try the same question with:
+
+- `k = 1`
+- `k = 2`
+- `k = 4`
+
+Then compare:
+
+- the retrieved chunks
+- the final answer
+- whether the extra chunks helped or added noise
+
+This is one of the easiest ways to understand how RAG quality changes with retrieval settings.
+
 ## Common Issues
 
 ### PDF not found
@@ -203,6 +274,8 @@ Possible reasons:
 - The embedding model used for query does not match the one used for ingestion
 - The question is unrelated to the PDF
 - The selected Ollama model is not good for embeddings or chat
+- `k` is too small and misses supporting context
+- `k` is too large and brings in noisy chunks
 
 ### Ollama connection error
 

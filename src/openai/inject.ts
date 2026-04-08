@@ -25,6 +25,10 @@ async function run() {
     ids: chunks.map((_, i) => `id-${i}`),
     documents: chunks,
     embeddings: embeddings.data.map(e => e.embedding),
+    metadatas: chunks.map((_, i) => ({
+      source: "sample.pdf",
+      chunk: i,
+    })),
   });
 
   console.log("Ingested!");
