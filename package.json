@@ -1,0 +1,29 @@
+{
+  "name": "rag-app",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc",
+    "inject:openai": "ts-node dist/openai/inject.js",
+    "query:openai": "ts-node dist/openai/query.js",
+    "inject:ollama": "ts-node dist/ollama/inject.js",
+    "query:ollama": "ts-node dist/ollama/query.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "dependencies": {
+    "chromadb": "^3.4.2",
+    "dotenv": "^17.4.1",
+    "ollama": "^0.6.3",
+    "openai": "^6.33.0",
+    "pdf-parse": "^2.4.5"
+  },
+  "devDependencies": {
+    "@types/node": "^25.5.2",
+    "ts-node": "^10.9.2",
+    "typescript": "^6.0.2"
+  }
+}
