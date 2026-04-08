@@ -7,8 +7,10 @@
     "build": "tsc",
     "inject:openai": "ts-node dist/openai/inject.js",
     "query:openai": "ts-node dist/openai/query.js",
+    "eval:openai": "ts-node dist/openai/eval.js",
     "inject:ollama": "ts-node dist/ollama/inject.js",
-    "query:ollama": "ts-node dist/ollama/query.js"
+    "query:ollama": "ts-node dist/ollama/query.js",
+    "eval:ollama": "ts-node dist/ollama/eval.js"
   },
   "keywords": [],
   "author": "",

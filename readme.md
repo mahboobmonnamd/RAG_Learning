@@ -22,9 +22,15 @@ The goal is to understand the basic RAG flow:
 
 - [sample.pdf](/Users/mahboob/Developer/Learning/rag-app/sample.pdf): source document to ingest
 - [src/openai/inject.ts](/Users/mahboob/Developer/Learning/rag-app/src/openai/inject.ts): ingest PDF into Chroma using OpenAI embeddings
+- [src/openai/rag.ts](/Users/mahboob/Developer/Learning/rag-app/src/openai/rag.ts): reusable OpenAI RAG query helper
 - [src/openai/query.ts](/Users/mahboob/Developer/Learning/rag-app/src/openai/query.ts): query Chroma and answer using OpenAI
+- [src/openai/eval.ts](/Users/mahboob/Developer/Learning/rag-app/src/openai/eval.ts): run the OpenAI evaluation set
 - [src/ollama/inject.ts](/Users/mahboob/Developer/Learning/rag-app/src/ollama/inject.ts): ingest PDF into Chroma using Ollama embeddings
+- [src/ollama/rag.ts](/Users/mahboob/Developer/Learning/rag-app/src/ollama/rag.ts): reusable Ollama RAG query helper
 - [src/ollama/query.ts](/Users/mahboob/Developer/Learning/rag-app/src/ollama/query.ts): query Chroma and answer using Ollama
+- [src/ollama/eval.ts](/Users/mahboob/Developer/Learning/rag-app/src/ollama/eval.ts): run the Ollama evaluation set
+- [src/eval/questions.ts](/Users/mahboob/Developer/Learning/rag-app/src/eval/questions.ts): shared evaluation questions, including unknown-answer cases
+- [src/eval/run.ts](/Users/mahboob/Developer/Learning/rag-app/src/eval/run.ts): shared evaluation runner and scoring
 - [src/db.ts](/Users/mahboob/Developer/Learning/rag-app/src/db.ts): Chroma collection setup
 - [src/utils.ts](/Users/mahboob/Developer/Learning/rag-app/src/utils.ts): PDF loading and chunking helpers
 
@@ -154,6 +160,35 @@ npm run query:ollama
 
 This embeds the question, retrieves similar chunks from Chroma, sends them to the model, and prints the answer.
 
+## 6. Run the evaluation script
+
+### OpenAI evaluation
+
+```bash
+npm run eval:openai
+```
+
+### Ollama evaluation
+
+```bash
+npm run eval:ollama
+```
+
+The evaluation runner executes 8 test questions against the current collection:
+
+- 6 answerable questions from the Ikigai PDF
+- 2 unknown questions that should return `I don't know`
+
+For each case it prints:
+
+- pass or fail
+- the question
+- whether the answer was expected to be unknown
+- the model answer
+- number of retrieved source chunks
+
+At the end it prints a simple score such as `7/8`.
+
 ## Typical Learning Flow
 
 ### OpenAI
@@ -161,6 +196,7 @@ This embeds the question, retrieves similar chunks from Chroma, sends them to th
 ```bash
 npm run build
 npm run inject:openai
+npm run eval:openai
 npm run query:openai
 ```
 
@@ -169,6 +205,7 @@ npm run query:openai
 ```bash
 npm run build
 npm run inject:ollama
+npm run eval:ollama
 npm run query:ollama
 ```
 
